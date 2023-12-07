@@ -1,4 +1,4 @@
-const { I, dataVisualizationPage } = inject();
+const { I } = inject();
 
 module.exports = {
   // Insert your locators and methods here
@@ -6,6 +6,7 @@ module.exports = {
     usernameTextbox: "//input[@id='loginID']",
     passwordTextbox: "//input[@type='password']",
     signInButton: "//input[@id='login' and @type='submit']",
+    
   },
 
   async performLogin() {
@@ -18,4 +19,5 @@ module.exports = {
     I.click(this.fields.signInButton);
     
   },
+ 
 };

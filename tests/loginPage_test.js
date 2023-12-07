@@ -4,5 +4,6 @@ Scenario("Verify that user is logged in successfully with valid data @login",({ 
     I.amOnPage("/");
     loginPage.performLogin();
     
+    
   }
 ).retry(1);

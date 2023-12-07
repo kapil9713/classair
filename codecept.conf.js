@@ -16,7 +16,7 @@ exports.config = {
   helpers: {
     Playwright: {
       browser: 'chromium',
-      url: 'http://128.140.1.135/',
+      url: 'http://128.140.1.135',
       show: true
     }
   },
@@ -24,6 +24,7 @@ exports.config = {
     I: './steps_file.js',
     loginPage: './pages/loginPage.js',
     dataVisualizationPage:"./pages/dataVisualizationPage.js",
+    sensorPage:"./pages/sensorPage.js",
     
   },
   name: 'classair'
