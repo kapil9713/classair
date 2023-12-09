@@ -14,21 +14,29 @@ module.exports = {
       listOfClientName:"//tbody/tr/td[2]",
       dropdown:"//select[@class='dropdownClass']",
       addNewClientAndDistributor:"//a[contains(text(), 'Add New Client or Distributor')]", //btn
-      type:"//input[@type='text']",//dd
+      type:"(//input[@placeholder='Select..' and contains(@class, 'form-control')])",//dd
+      bSelect:"(//input[@type='text'])[2]/following-sibling::div/a[1]",
+      selectType:"//div[contains(@class, 'dropdown-content') and contains(@class, 'dropdownArea')]//a[text()='Client']",
       next:"(//button[@type='button'])[2]",//btn
       name:"//input[@id='clientName']",//ff
-      serviceProvided:"",//dd
-      distributor:"",//dd
-      sageID:"",//ff
-      interlocutor:"",//ff
-      status:"",//dd
-      installationDate:"",//click
-      clientType:"",//dd
-      uploadImage:"//button[contains(text(), 'Upload Logo')]",//click
-      country:"",//ff
-      city:"",//ff
-      address:"",//ff
-      postalCode:"",//ff
+      serviceProvided:"(//input[@placeholder='Select..' and contains(@class, 'form-control')])[1]",//dd
+      selectServiceProvider:"//div[contains(@class, 'dropdown-content') and contains(@class, 'dropdownArea')]//a[text()='Sensors only']",
+      distributor:"(//input[@placeholder='Select..' and contains(@class, 'form-control')])[2]",//dd
+      selectDistributor:"//div[contains(@class, 'dropdown-content') and contains(@class, 'dropdownArea')]//a[text()='Pyrescom']",
+      sageID:"//input[@id='sage']",//ff
+      interlocutor:"//input[@id='interlocutor']",//ff
+      status:"(//input[@placeholder='Select..' and contains(@class, 'form-control')])[3]",//dd
+      selectStatus:"//div[contains(@class, 'dropdown-content') and contains(@class, 'dropdownArea')]//a[text()='Active']",
+      installationDate:"//input[@id='date']",//click
+      clientType:"(//input[@placeholder='Select..' and contains(@class, 'form-control')])[4]",//dd
+      selectClientType:"(//input[@type='text'])[9]/following-sibling::div/a[1]",
+      uploadImage:"//div[@data-v-d5d060a3]//input[@type='file']",//click
+      country:"//input[@id='clientCountry']",//ff
+      city:"//input[@id='clientCity']",//ff
+      address:"//input[@id='clientAddress']",//ff
+      postalCode:"//input[@id='clientPostCode']",//ff
+      left:"//div[@class='headerLeft']",
+      
     },
     
     async verifyTopHeading() {
@@ -62,9 +70,50 @@ module.exports = {
         
       },
       async addNewClientAndDistributor(){
+        I.waitForElement(this.fields.addNewClientAndDistributor,10);
+        I.click(this.fields.addNewClientAndDistributor);
+        I.waitForElement(this.fields.type,10);
+        I.click(this.fields.type);
+        I.waitForElement(this.fields.selectType, 5);
+        I.click(this.fields.selectType);
+        
+        I.click(this.fields.next);
+        I.fillField(this.fields.name,'vespa');
+        
+        I.click(this.fields.serviceProvided);
+        I.waitForElement(this.fields.selectServiceProvider, 5);
+        I.click(this.fields.selectServiceProvider);
+        I.click(this.fields.distributor);
+        I.waitForElement(this.fields.selectDistributor, 5);
+        I.click(this.fields.selectDistributor);
+
+        
+        I.fillField(this.fields.sageID,'1');
+        I.fillField(this.fields.interlocutor, 'kp');
+        
+        I.click(this.fields.status);
+        I.waitForElement(this.fields.selectStatus, 5);
+        I.click(this.fields.selectStatus);
+        
+        // I.waitForElement(this.fields.installationDate, 10);
+        // I.click(this.fields.installationDate);
+       
+        I.click(this.fields.clientType);
+        I.waitForElement(this.fields.selectClientType, 5);
+        I.click(this.fields.selectClientType);
+       // I.click(this.fields.uploadImage);
+        I.attachFile(this.fields.uploadImage, 'tests/upload/img.png');
+        I.waitForElement(this.fields.country, 5);
+        I.fillField(this.fields.country,'india');
+        I.fillField(this.fields.city, 'sehore');
+        I.fillField(this.fields.address, 'dlf');
+        I.fillField(this.fields.postalCode, '466001');
+       
+
+
 
       }
 
 
 
-}
+};

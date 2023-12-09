@@ -23,3 +23,12 @@ Scenario("Verify List Of ClientName on DataVisualizationPage @login",({ I, login
     dataVisualizationPage.verifyListOfClientName();
   }
 )
+Scenario("Add new Client on DataVisualizationPage @login",({ I, loginPage, dataVisualizationPage}) => {
+    I.amOnPage("/");
+    loginPage.performLogin();
+    dataVisualizationPage.verifyTopHeading();
+    dataVisualizationPage.changeLanguage();
+    //dataVisualizationPage.verifyListOfClientName();
+    dataVisualizationPage.addNewClientAndDistributor();
+  }
+)
