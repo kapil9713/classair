@@ -25,6 +25,8 @@ exports.config = {
     loginPage: './pages/loginPage.js',
     dataVisualizationPage:"./pages/dataVisualizationPage.js",
     sensorPage:"./pages/sensorPage.js",
+    clientData:"./pages/data/clientData.js",
+   
     
   },
   name: 'classair'

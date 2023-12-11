@@ -1,8 +1,8 @@
 Feature("Login");
 
-Scenario("Verify that user is logged in successfully with valid data @login",({ I, loginPage,dataVisualizationPage }) => {
+Scenario("Verify that user is logged in successfully with valid data @login", async({ I, loginPage,dataVisualizationPage }) => {
     I.amOnPage("/");
-    loginPage.performLogin();
+    await loginPage.performLogin();
     
     
   }
