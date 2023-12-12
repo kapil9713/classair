@@ -1,1 +1,97 @@
 
+name: UI Tests ClassAir
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+  - cron: "0 0 * * *"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    env:
+      LOGINID: ${{secrets.LOGINID}}
+      PASSWORD: ${{secrets.PASSWORD}}
+      
+      
+
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Build
+      run: |
+        npm install
+
+    - name: Setup UI-tests Tests
+      id: hyperspace-UI-tests-setup
+      run: |
+        node -v
+        npm install
+        npm install mocha-junit-reporter mochawesome
+        npx playwright install
+
+    - name: Execute UI-tests Tests
+      id: hyperspace-UI-tests
+      run: |
+        node -v
+        ./node_modules/.bin/codeceptjs run --reporter mochawesome --grep '@UI'
+
+    - name: Send UI Tests Execution Results on Slack if tests execution passed
+      if: always() && steps.hyperspace-UI-tests.outcome == 'success'
+      run: |
+        curl -X POST -H 'Content-type: application/json' --data '{
+        "text": "UI Test Results",
+        "blocks": [
+              {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "UI Test Results:"
+                }
+            },
+            {
+                "type": "section",
+                "block_id": "section567",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}| Test Job URL> :large_green_circle: All UI Tests have passed"
+                }
+            }
+        ]}' https://hooks.slack.com/services/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
+
+    - name: Send UI Tests Execution Results on Slack if tests execution Failed
+      if: always() && steps.hyperspace-UI-tests.outcome == 'failure'
+      run: |
+        curl -X POST -H 'Content-type: application/json' --data '{
+        "text": "UI Test Results",
+        "blocks": [
+              {
+                "type": "section",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "UI Test Results:"
+                }
+            },
+            {
+                "type": "section",
+                "block_id": "section567",
+                "text": {
+                    "type": "mrkdwn",
+                    "text": "<${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}| Test Job URL> :red_circle: Some UI Tests have Failed"
+                }
+            }
+        ]}' https://hooks.slack.com/services/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
