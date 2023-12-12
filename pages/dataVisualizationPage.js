@@ -39,9 +39,9 @@ module.exports = {
     left: "//div[@class='headerLeft']",
     addClient: "//button[@type='button']",
     searchInput:"(//input[@class='myInputMulti' and @placeholder='Search..'])[1]",
-    searchButton:"",
     searchResult:"(//div[@class='dropdownList']//input[contains(@id,'clientName') and @type='checkbox'])[last()]",
-    searchResultName:"",
+    verifyClientName:"(//div[@class='firstFew' and @for='location'])[1]",
+    verifyListOfClientName:"//table[@class='dataListTable']//tr/td[count(//table[@class='dataListTable']//th[normalize-space()='Name']/preceding-sibling::th) + 1]",
     
   },
 
@@ -118,16 +118,21 @@ module.exports = {
   },
 
   async verifyNewClient(name) {
-    
     I.waitForElement(this.fields.listName, 5);
     I.click(this.fields.listName);
     I.waitForElement(this.fields.searchInput, 5);
     I.click(this.fields.searchInput);
     I.fillField(this.fields.searchInput,name);
     I.click(this.fields.searchResult);
-    I.wait(10);
+    I.waitForElement(this.fields.confirm, 5);
     I.scrollTo(this.fields.confirm);
     I.click(this.fields.confirm);
+    I.waitForElement(this.fields.verifyClientName, 10);
+    const fullText = await I.grabTextFrom(this.fields.verifyClientName);
+    const actualclientName = fullText.split(' ').slice(1).join(' ').split('Type:')[0].trim();
+    const expectedClientName = await I.grabTextFrom(this.fields.verifyListOfClientName);
+    assert.strictEqual(actualclientName, expectedClientName);
+
     
     
     
